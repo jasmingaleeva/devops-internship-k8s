@@ -1,0 +1,3 @@
+# Standard library used for maximum speed and zero external vulnerabilities.
+# Optional production WSGI server if needed:
+# gunicorn>=22.0.0

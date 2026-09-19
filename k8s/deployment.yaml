@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-python-deployment
+  labels:
+    app: hello-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-python
+  template:
+    metadata:
+      labels:
+        app: hello-python
+    spec:
+      containers:
+        - name: hello-python
+          image: youhanasy/hello-python:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 32777
+              name: http
+          env:
+            - name: APP_PORT
+              value: "32777"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 32777
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 32777
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
